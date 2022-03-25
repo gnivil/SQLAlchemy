@@ -1,12 +1,11 @@
-# Surfs Up!
+# SQLAlchemy Challenge - Surfs Up!
 
 Congratulations! You've decided to treat yourself to a long holiday vacation in Honolulu, Hawaii! To help with your trip planning, you need to do some climate analysis on the area. The following outlines what you need to do.
 
 -----
 
-# Step 1 - Climate Analysis and Exploration
-
-To begin, use Python and SQLAlchemy to do basic climate analysis and data exploration of your climate database. All of the following analysis should be completed using SQLAlchemy ORM queries, Pandas, and Matplotlib.
+## Step 1 - Climate Analysis and Exploration
+Used Python and SQLAlchemy to do basic climate analysis and data exploration of climate database. All of the following analysis completed using SQLAlchemy ORM queries, Pandas, and Matplotlib
 
 * Import Dependencies
 ```python
@@ -27,13 +26,13 @@ from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func, inspect, distinct
 ```
 
-* Use SQLAlchemy create_engine to connect to your sqlite database.
+* Used SQLAlchemy create_engine to connect to sqlite database
 ```python
 # create engine to hawaii.sqlite
 engine = create_engine('sqlite:///Resources/hawaii.sqlite')
 ```
 
-* Use SQLAlchemy automap_base() to reflect your tables into classes and save a reference to those classes called Station and Measurement.
+* Used SQLAlchemy automap_base() to reflect tables into classes and save a reference to those classes called Station and Measurement
 ```python
 # Reflect an existing database into a new model
 Base = automap_base()
@@ -60,7 +59,7 @@ for c in columns_b:
     print(c['name'], c['type'])
 ```
 
-* Link Python to the database by creating an SQLAlchemy session.
+* Linked Python to the database by creating an SQLAlchemy session
 ```python
 # Create our session (link) from Python to the DB
 session = Session(engine)
@@ -70,15 +69,15 @@ session = Session(engine)
 
 ## Precipitation Analysis
  
-* Start by finding the most recent date in the data set.
+* Started by finding the most recent date in the data set.
 ```python
 # Find the most recent date in the data set.
 recent_date = session.query(Measurement.date).order_by(Measurement.date.desc()).first()
 recent_date
 ```
 
-* Using this date, retrieve the last 12 months of precipitation data by querying the 12 preceding months of data.
-* Select only the date and prcp values.
+* Using this date, retrieved the last 12 months of precipitation data by querying the 12 preceding months of data
+* Select only the date and prcp values
 ```python
 # Design a query to retrieve the last 12 months of precipitation data and plot the results. 
 # Starting from the most recent data point in the database. 
@@ -95,8 +94,8 @@ date = [result[0] for result in prcp_data[:366]]
 prcp = [result[1] for result in prcp_data[:366]]
 ```
 
-* Load the query results into a Pandas DataFrame and set the index to the date column.
-* Sort the DataFrame values by date.
+* Loaded the query results into a Pandas DataFrame and set the index to the date column
+* Sorted the DataFrame values by date
 ```python
 # Save the query results as a Pandas DataFrame and set the index to the date column
 prcp_df = pd.DataFrame(prcp_data,columns=['date', 'prcp']).sort_values('date').set_index('date')
@@ -105,7 +104,7 @@ prcp_df.head()
 ```
 ![alt text](https://github.com/gnivil/sqlalchemy-challenge/blob/1e89664cc461889680e45c6ef5adf4ffe0fe1d6a/Images/df.png)
 
-* Plot the results using the DataFrame plot method.
+* Plotted the results using the DataFrame plot method
 ```python
 # Use Pandas Plotting with Matplotlib to plot the data
 prcp_df.plot(figsize=(10,5), fontsize=10, rot=60)
@@ -118,8 +117,7 @@ plt.show()
 ```
 ![alt text](https://github.com/gnivil/sqlalchemy-challenge/blob/1e89664cc461889680e45c6ef5adf4ffe0fe1d6a/Images/precipitation_data_bargraph.png)
 
-
-* Use Pandas to print the summary statistics for the precipitation data.
+* Used Pandas to print the summary statistics for the precipitation data
 ```python
 # Use Pandas to calcualte the summary statistics for the precipitation data
 precipitation_data = prcp_df['Precipitation'].describe()
@@ -132,16 +130,16 @@ summary_statistics
 
 ## Station Analysis
 
-* Design a query to calculate the total number of stations in the dataset.
+* Designed a query to calculate the total number of stations in the dataset
 ```python
 # Design a query to calculate the total number stations in the dataset
 station_count = session.query(Station.station).count()
 station_count
 ```
 
-* Design a query to find the most active stations (i.e. which stations have the most rows?).
-* List the stations and observation counts in descending order.
-* Which station id has the highest number of observations?
+* Designed a query to find the most active stations (i.e. which stations have the most rows?)
+* Listed the stations and observation counts in descending order
+* Identified station id with highest number of observations
 ```python
 # Design a query to find the most active stations (i.e. what stations have the most rows?)
 # List the stations and the counts in descending order.
@@ -156,7 +154,7 @@ print (f'The most active station id is {most_active_station}.')
 print('-'*5)
 ```
 
-* Using the most active station id, calculate the lowest, highest, and average temperature.
+* Using the most active station id, calculated the lowest, highest, and average temperature
 ```python
 # Calculate lowest temperature
 lowest_temp = session.query(func.min(Measurement.tobs)).\
@@ -174,8 +172,8 @@ avg_temp = session.query(func.avg(Measurement.tobs)).\
 print(f"Average temperature: {round(avg_temp, 2)} degrees Fahrenheit.")
 ```
 
-* Design a query to retrieve the last 12 months of temperature observation data (TOBS).
-* Filter by the station with the highest number of observations.
+* Designed a query to retrieve the last 12 months of temperature observation data (TOBS)
+* Filtered by the station with the highest number of observations
 ```python
 # Query the last 12 months of temperature observation date for station id USC00519281
 most_active_tobs = pd.DataFrame(session.query(Measurement.tobs).\
@@ -184,7 +182,7 @@ most_active_tobs = pd.DataFrame(session.query(Measurement.tobs).\
                                         & (Measurement.date <= dt.date(2017,8,23))).all())
 ```
 
-* Plot the results as a histogram with bins=12.
+* Plotted the results as a histogram with bins=12
 ```python
 # Plot query results as a histogram
 most_active_tobs.plot(kind="hist", figsize=(10,5), bins=12, legend=True)
@@ -212,8 +210,9 @@ session.close()
 -----
 
 # Step 2 - Climate App
+Now that you have completed your initial analysis, design a Flask API based on the queries that you have just developed. Use Flask to create your routes.
 
-Now that you have completed your initial analysis, design a Flask API based on the queries that you have just developed.Use Flask to create your routes.
+-----
 ```python
 # Import Dependencies
 import datetime as dt
@@ -247,12 +246,10 @@ Station = Base.classes.station
 app = Flask(__name__)
 ```
 
------
-
 ## /
 
-* Home page.
-* List all routes that are available.
+* Home page
+* List all routes that are available
 ```python
 @app.route("/")
 def home():
@@ -274,9 +271,8 @@ def home():
 -----
 
 ## /api/v1.0/precipitation
-
-* Convert the query results to a dictionary using date as the key and prcp as the value.
-* Return the JSON representation of your dictionary.
+* Converted the query results to a dictionary using date as the key and prcp as the value
+* Returned the JSON representation of dictionary
 ```python
 @app.route("/api/v1.0/precipitation")
 def precipitation():
@@ -303,8 +299,7 @@ def precipitation():
 -----
 
 ## /api/v1.0/stations
-
-* Return a JSON list of stations from the dataset.
+* Returned a JSON list of stations from the dataset
 ```python
 @app.route("/api/v1.0/stations")
 def stations():
@@ -338,9 +333,8 @@ def stations():
 -----
 
 ## /api/v1.0/tobs
-
-* Query the dates and temperature observations of the most active station for the last year of data.
-* Return a JSON list of temperature observations (TOBS) for the previous year.
+* Queryed the dates and temperature observations of the most active station for the last year of data
+* Returned a JSON list of temperature observations (TOBS) for the previous year
 ```python
 @app.route("/api/v1.0/tobs")
 def tobs():
@@ -379,9 +373,8 @@ def tobs():
 -----
 
 ## /api/v1.0/<start>
-
-* Return a JSON list of the minimum temperature, the average temperature, and the max temperature for a given start 
-* When given the start only, calculate TMIN, TAVG, and TMAX for all dates greater than and equal to the start date.
+* Returned a JSON list of the minimum temperature, the average temperature, and the max temperature for a given start 
+* When given the start only, calculateed TMIN, TAVG, and TMAX for all dates greater than and equal to the start date
 ```python
 @app.route("/api/v1.0/<start>")
 def temps_from_start(start):
@@ -431,8 +424,8 @@ def temps_from_start(start):
 ```
 
 ## /api/v1.0/<start>/<end>
-* Return a JSON list of the minimum temperature, the average temperature, and the max temperature for a given start-end range
-* When given the start and the end date, calculate the TMIN, TAVG, and TMAX for dates between the start and end date inclusive.
+* Returned a JSON list of the minimum temperature, the average temperature, and the max temperature for a given start-end range
+* When given the start and the end date, calculated the TMIN, TAVG, and TMAX for dates between the start and end date inclusive.
 ```python
 @app.route("/api/v1.0/<start>/<end>")
 def temps_between(start, end):
@@ -484,5 +477,4 @@ def temps_between(start, end):
 
 if __name__ == "__main__":
 ```
-
 -----
